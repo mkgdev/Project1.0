@@ -66,6 +66,8 @@
               position: place.geometry.location
             }));
               
+              getGeometryAll();
+              
               passMarkers();
 
             if (place.geometry.viewport) {
@@ -78,23 +80,33 @@
           });
           map.fitBounds(bounds);
         });
-    
+     markerCircles = [];
+    function getGeometryAll()
+     {
+         markers.forEach(function(marker)
+         {
+              var geometry = {};
+                         
+              geometry.lat = parseFloat(parseFloat(marker.getPosition().lat()).toFixed(4));
+        
+           geometry.lng =  parseFloat(parseFloat(marker.getPosition().lng()).toFixed(4));
+         markerCircles.push(geometry);
+                         
+               
+         }
+         
+    ); 
+     }
+     
      function passMarkers()
      {
-          var markerCircles = [];
-      markers.forEach(function(marker)
-      {
-          
          
-          
-          
-          var geometry = {};
-          
-           geometry.lat = marker.getPosition().lat();
-          
-           geometry.lng = marker.getPosition().lng();
-          markerCircles.push(geometry);
-        
+      markers.forEach(function(marker){
+      
+         
+            var geo = {};
+            geo.lat = marker.getPosition().lat();
+            geo.lng = marker.getPosition().lng();
            var cityCircle = new google.maps.Circle({
             strokeColor: '#87BCFF',
             strokeOpacity: 0.8,
@@ -102,15 +114,54 @@
             fillColor: '#E2FFFE',
             fillOpacity: 0.2,
             map: map,
-            center: geometry,
+            center: geo,
             radius: 3000
           });
           
-      }
+        
+          var bounds = {
+          
+           Top : parseFloat(parseFloat(cityCircle.getBounds().getNorthEast().lat()).toFixed(4)),
+           Right : parseFloat(parseFloat(cityCircle.getBounds().getNorthEast().lng()).toFixed(4)),            
+              Bottom : parseFloat(parseFloat(cityCircle.getBounds().getSouthWest().lat()).toFixed(4)),
+           Left   :parseFloat(parseFloat(cityCircle.getBounds().getSouthWest().lng()).toFixed(4))
+          
+          }
+          
+          
+          markerCircles.forEach(function(geometry)
+          {               
+             
+            
+              if((geometry.lat <=bounds.Top) && (geometry.lat>=bounds.Bottom )&& (geometry.lng<=bounds.right)&&(geometry.lng>=bounds.left))
+                  {
+                      
+                        console.log('not required');
                      
-      );
-      }
- }
+                  }
+              else{
+                  
+                  console.log(geometry);
+                  console.log(bounds);
+                  console.log('==================================');
+              }
+//              else{
+//                  console.log('required');
+//                  cityCircle.fillColor = 'red';
+//                  cityCircle.strokeColor = 'transparent';
+//              }
+          }  
+                                
+          );
+          
+          
+          
+    
+                      });  }}
+                      
+                      
+    
+ 
     
     //==========================================
 //    function findNearestMarker(geometry) {
