@@ -6,6 +6,7 @@ var mapRoutes = require('./routes/map.js');
 
 app.set('view engine', 'ejs');
 
+app.use(express.static(__dirname + "/public"));
 
 //Using routes
 app.use(mapRoutes);
