@@ -80,7 +80,7 @@
           });
           map.fitBounds(bounds);
         });
-     markerCircles = [];
+    var markerCircles = [];
     function getGeometryAll()
      {
          markers.forEach(function(marker)
@@ -129,31 +129,37 @@
           }
           
           
+          
+          var flag = 1;
+          
           markerCircles.forEach(function(geometry)
           {               
              
             
-              if((geometry.lat <=bounds.Top) && (geometry.lat>=bounds.Bottom )&& (geometry.lng<=bounds.right)&&(geometry.lng>=bounds.left))
+              if((geometry.lat <=bounds.Top) && (geometry.lat>=bounds.Bottom )&& (geometry.lng<=bounds.Right)&&(geometry.lng>=bounds.Left))
                   {
+                      if(parseFloat(parseFloat(geo.lat).toFixed(4))!=geometry.lat && parseFloat(parseFloat(geo.lng).toFixed(4))!=geometry.lng){
                       
                         console.log('not required');
+                        
+                        flag= 0;
                      
                   }
+                  }
+
               else{
-                  
-                  console.log(geometry);
-                  console.log(bounds);
-                  console.log('==================================');
-              }
-//              else{
 //                  console.log('required');
-//                  cityCircle.fillColor = 'red';
-//                  cityCircle.strokeColor = 'transparent';
-//              }
+        
+      
           }  
+          }
                                 
           );
           
+          if(flag == 0){
+              cityCircle.fillColor = 'transparent';
+                        cityCircle.strokeColor = 'transparent';
+          }
           
           
     
